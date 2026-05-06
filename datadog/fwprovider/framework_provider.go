@@ -66,6 +66,7 @@ var Resources = []func() resource.Resource{
 	NewRumRetentionFiltersOrderResource,
 	NewSensitiveDataScannerGroupOrder,
 	NewServiceAccountApplicationKeyResource,
+	NewServiceAccessTokenResource,
 	NewSpansMetricResource,
 	NewSyntheticsConcurrencyCapResource,
 	NewSyntheticsGlobalVariableResource,
