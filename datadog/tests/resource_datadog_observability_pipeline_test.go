@@ -7157,8 +7157,8 @@ resource "datadog_observability_pipeline" "clickhouse_dest" {
     source {
       id = "source-1"
       http_server {
-        decoding = "json"
-        address_key = "DD_OP_ADDRESS"
+        auth_strategy = "none"
+        decoding      = "json"
       }
     }
 
@@ -7243,8 +7243,8 @@ resource "datadog_observability_pipeline" "clickhouse_dest_minimal" {
     source {
       id = "source-1"
       http_server {
-        decoding = "json"
-        address_key = "DD_OP_ADDRESS"
+        auth_strategy = "none"
+        decoding      = "json"
       }
     }
 
@@ -7287,8 +7287,8 @@ resource "datadog_observability_pipeline" "clickhouse_dest_arrow" {
     source {
       id = "source-1"
       http_server {
-        decoding = "json"
-        address_key = "DD_OP_ADDRESS"
+        auth_strategy = "none"
+        decoding      = "json"
       }
     }
 
