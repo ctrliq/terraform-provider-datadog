@@ -199,6 +199,10 @@ type processorModel struct {
 	ParseXMLProcessor             []*parseXMLProcessorModel                           `tfsdk:"parse_xml"`
 	SplitArrayProcessor           []*splitArrayProcessorModel                         `tfsdk:"split_array"`
 	MetricTagsProcessor           []*metricTagsProcessorModel                         `tfsdk:"metric_tags"`
+	AddMetricTagsProcessor        []*observability_pipeline.AddMetricTagsProcessorModel        `tfsdk:"add_metric_tags"`
+	AggregateProcessor            []*observability_pipeline.AggregateProcessorModel            `tfsdk:"aggregate"`
+	RenameMetricTagsProcessor     []*observability_pipeline.RenameMetricTagsProcessorModel     `tfsdk:"rename_metric_tags"`
+	TagCardinalityLimitProcessor  []*observability_pipeline.TagCardinalityLimitProcessorModel  `tfsdk:"tag_cardinality_limit"`
 }
 
 type metricTagsProcessorModel struct {
@@ -2159,9 +2163,13 @@ func (r *observabilityPipelineResource) Schema(_ context.Context, _ resource.Sch
 														},
 													},
 												},
-												"ocsf_mapper":      observability_pipeline.OcsfMapperProcessorSchema(),
-												"datadog_tags":     observability_pipeline.DatadogTagsProcessorSchema(),
-												"custom_processor": observability_pipeline.CustomProcessorSchema(),
+												"ocsf_mapper":           observability_pipeline.OcsfMapperProcessorSchema(),
+												"datadog_tags":          observability_pipeline.DatadogTagsProcessorSchema(),
+												"custom_processor":      observability_pipeline.CustomProcessorSchema(),
+												"add_metric_tags":       observability_pipeline.AddMetricTagsProcessorSchema(),
+												"aggregate":             observability_pipeline.AggregateProcessorSchema(),
+												"rename_metric_tags":    observability_pipeline.RenameMetricTagsProcessorSchema(),
+												"tag_cardinality_limit": observability_pipeline.TagCardinalityLimitProcessorSchema(),
 												"metric_tags": schema.ListNestedBlock{
 													Description: "The `metric_tags` processor filters metrics based on their tags using Datadog tag key patterns.",
 													Validators: []validator.List{
@@ -3607,6 +3615,14 @@ func flattenProcessorGroup(ctx context.Context, group *datadogV2.ObservabilityPi
 			procModel = flattenSplitArrayProcessor(ctx, p.ObservabilityPipelineSplitArrayProcessor)
 		} else if p.ObservabilityPipelineMetricTagsProcessor != nil {
 			procModel = flattenMetricTagsProcessor(ctx, p.ObservabilityPipelineMetricTagsProcessor)
+		} else if p.ObservabilityPipelineAddMetricTagsProcessor != nil {
+			procModel = flattenAddMetricTagsProcessor(ctx, p.ObservabilityPipelineAddMetricTagsProcessor)
+		} else if p.ObservabilityPipelineAggregateProcessor != nil {
+			procModel = flattenAggregateProcessor(ctx, p.ObservabilityPipelineAggregateProcessor)
+		} else if p.ObservabilityPipelineRenameMetricTagsProcessor != nil {
+			procModel = flattenRenameMetricTagsProcessor(ctx, p.ObservabilityPipelineRenameMetricTagsProcessor)
+		} else if p.ObservabilityPipelineTagCardinalityLimitProcessor != nil {
+			procModel = flattenTagCardinalityLimitProcessor(ctx, p.ObservabilityPipelineTagCardinalityLimitProcessor)
 		}
 
 		if procModel != nil {
@@ -3739,6 +3755,18 @@ func expandProcessorTypes(ctx context.Context, processor *processorModel) []data
 	}
 	for _, p := range processor.MetricTagsProcessor {
 		items = append(items, expandMetricTagsProcessorItem(ctx, common, p))
+	}
+	for _, p := range processor.AddMetricTagsProcessor {
+		items = append(items, observability_pipeline.ExpandAddMetricTagsProcessor(common, p))
+	}
+	for _, p := range processor.AggregateProcessor {
+		items = append(items, observability_pipeline.ExpandAggregateProcessor(common, p))
+	}
+	for _, p := range processor.RenameMetricTagsProcessor {
+		items = append(items, observability_pipeline.ExpandRenameMetricTagsProcessor(common, p))
+	}
+	for _, p := range processor.TagCardinalityLimitProcessor {
+		items = append(items, observability_pipeline.ExpandTagCardinalityLimitProcessor(common, p))
 	}
 
 	return items
@@ -4389,6 +4417,50 @@ func flattenDatadogTagsProcessor(ctx context.Context, src *datadogV2.Observabili
 	model := createProcessorModel(src)
 	if f := observability_pipeline.FlattenDatadogTagsProcessor(src); f != nil {
 		model.DatadogTagsProcessor = append(model.DatadogTagsProcessor, f)
+	}
+	return model
+}
+
+func flattenAddMetricTagsProcessor(ctx context.Context, src *datadogV2.ObservabilityPipelineAddMetricTagsProcessor) *processorModel {
+	if src == nil {
+		return nil
+	}
+	model := createProcessorModel(src)
+	if f := observability_pipeline.FlattenAddMetricTagsProcessor(src); f != nil {
+		model.AddMetricTagsProcessor = append(model.AddMetricTagsProcessor, f)
+	}
+	return model
+}
+
+func flattenAggregateProcessor(ctx context.Context, src *datadogV2.ObservabilityPipelineAggregateProcessor) *processorModel {
+	if src == nil {
+		return nil
+	}
+	model := createProcessorModel(src)
+	if f := observability_pipeline.FlattenAggregateProcessor(src); f != nil {
+		model.AggregateProcessor = append(model.AggregateProcessor, f)
+	}
+	return model
+}
+
+func flattenRenameMetricTagsProcessor(ctx context.Context, src *datadogV2.ObservabilityPipelineRenameMetricTagsProcessor) *processorModel {
+	if src == nil {
+		return nil
+	}
+	model := createProcessorModel(src)
+	if f := observability_pipeline.FlattenRenameMetricTagsProcessor(src); f != nil {
+		model.RenameMetricTagsProcessor = append(model.RenameMetricTagsProcessor, f)
+	}
+	return model
+}
+
+func flattenTagCardinalityLimitProcessor(ctx context.Context, src *datadogV2.ObservabilityPipelineTagCardinalityLimitProcessor) *processorModel {
+	if src == nil {
+		return nil
+	}
+	model := createProcessorModel(src)
+	if f := observability_pipeline.FlattenTagCardinalityLimitProcessor(src); f != nil {
+		model.TagCardinalityLimitProcessor = append(model.TagCardinalityLimitProcessor, f)
 	}
 	return model
 }
