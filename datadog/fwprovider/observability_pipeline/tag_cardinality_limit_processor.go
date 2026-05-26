@@ -11,17 +11,17 @@ import (
 )
 
 type TagCardinalityLimitProcessorModel struct {
-	LimitExceededAction types.String                                       `tfsdk:"limit_exceeded_action"`
-	ValueLimit          types.Int64                                        `tfsdk:"value_limit"`
-	PerMetricLimits     []TagCardinalityLimitProcessorPerMetricLimitModel  `tfsdk:"per_metric_limit"`
+	LimitExceededAction types.String                                      `tfsdk:"limit_exceeded_action"`
+	ValueLimit          types.Int64                                       `tfsdk:"value_limit"`
+	PerMetricLimits     []TagCardinalityLimitProcessorPerMetricLimitModel `tfsdk:"per_metric_limit"`
 }
 
 type TagCardinalityLimitProcessorPerMetricLimitModel struct {
-	MetricName          types.String                                    `tfsdk:"metric_name"`
-	Mode                types.String                                    `tfsdk:"mode"`
-	LimitExceededAction types.String                                    `tfsdk:"limit_exceeded_action"`
-	ValueLimit          types.Int64                                     `tfsdk:"value_limit"`
-	PerTagLimits        []TagCardinalityLimitProcessorPerTagLimitModel  `tfsdk:"per_tag_limit"`
+	MetricName          types.String                                   `tfsdk:"metric_name"`
+	Mode                types.String                                   `tfsdk:"mode"`
+	LimitExceededAction types.String                                   `tfsdk:"limit_exceeded_action"`
+	ValueLimit          types.Int64                                    `tfsdk:"value_limit"`
+	PerTagLimits        []TagCardinalityLimitProcessorPerTagLimitModel `tfsdk:"per_tag_limit"`
 }
 
 type TagCardinalityLimitProcessorPerTagLimitModel struct {
