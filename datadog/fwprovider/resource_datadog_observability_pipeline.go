@@ -177,32 +177,32 @@ type processorModel struct {
 	Include     types.String `tfsdk:"include"`
 	DisplayName types.String `tfsdk:"display_name"`
 
-	FilterProcessor               []*filterProcessorModel                             `tfsdk:"filter"`
-	ParseJsonProcessor            []*parseJsonProcessorModel                          `tfsdk:"parse_json"`
-	AddFieldsProcessor            []*addFieldsProcessor                               `tfsdk:"add_fields"`
-	RenameFieldsProcessor         []*renameFieldsProcessorModel                       `tfsdk:"rename_fields"`
-	RemoveFieldsProcessor         []*removeFieldsProcessorModel                       `tfsdk:"remove_fields"`
-	QuotaProcessor                []*quotaProcessorModel                              `tfsdk:"quota"`
-	GenerateMetricsProcessor      []*generateMetricsProcessorModel                    `tfsdk:"generate_datadog_metrics"`
-	ParseGrokProcessor            []*parseGrokProcessorModel                          `tfsdk:"parse_grok"`
-	SampleProcessor               []*sampleProcessorModel                             `tfsdk:"sample"`
-	SensitiveDataScannerProcessor []*sensitiveDataScannerProcessorModel               `tfsdk:"sensitive_data_scanner"`
-	DedupeProcessor               []*dedupeProcessorModel                             `tfsdk:"dedupe"`
-	ReduceProcessor               []*reduceProcessorModel                             `tfsdk:"reduce"`
-	ThrottleProcessor             []*throttleProcessorModel                           `tfsdk:"throttle"`
-	AddEnvVarsProcessor           []*addEnvVarsProcessorModel                         `tfsdk:"add_env_vars"`
-	EnrichmentTableProcessor      []*enrichmentTableProcessorModel                    `tfsdk:"enrichment_table"`
-	OcsfMapperProcessor           []*ocsfMapperProcessorModel                         `tfsdk:"ocsf_mapper"`
-	DatadogTagsProcessor          []*observability_pipeline.DatadogTagsProcessorModel `tfsdk:"datadog_tags"`
-	CustomProcessor               []*observability_pipeline.CustomProcessorModel      `tfsdk:"custom_processor"`
-	AddHostnameProcessor          []*addHostnameProcessorModel                        `tfsdk:"add_hostname"`
-	ParseXMLProcessor             []*parseXMLProcessorModel                           `tfsdk:"parse_xml"`
-	SplitArrayProcessor           []*splitArrayProcessorModel                         `tfsdk:"split_array"`
-	MetricTagsProcessor           []*metricTagsProcessorModel                         `tfsdk:"metric_tags"`
-	AddMetricTagsProcessor        []*observability_pipeline.AddMetricTagsProcessorModel        `tfsdk:"add_metric_tags"`
-	AggregateProcessor            []*observability_pipeline.AggregateProcessorModel            `tfsdk:"aggregate"`
-	RenameMetricTagsProcessor     []*observability_pipeline.RenameMetricTagsProcessorModel     `tfsdk:"rename_metric_tags"`
-	TagCardinalityLimitProcessor  []*observability_pipeline.TagCardinalityLimitProcessorModel  `tfsdk:"tag_cardinality_limit"`
+	FilterProcessor               []*filterProcessorModel                                     `tfsdk:"filter"`
+	ParseJsonProcessor            []*parseJsonProcessorModel                                  `tfsdk:"parse_json"`
+	AddFieldsProcessor            []*addFieldsProcessor                                       `tfsdk:"add_fields"`
+	RenameFieldsProcessor         []*renameFieldsProcessorModel                               `tfsdk:"rename_fields"`
+	RemoveFieldsProcessor         []*removeFieldsProcessorModel                               `tfsdk:"remove_fields"`
+	QuotaProcessor                []*quotaProcessorModel                                      `tfsdk:"quota"`
+	GenerateMetricsProcessor      []*generateMetricsProcessorModel                            `tfsdk:"generate_datadog_metrics"`
+	ParseGrokProcessor            []*parseGrokProcessorModel                                  `tfsdk:"parse_grok"`
+	SampleProcessor               []*sampleProcessorModel                                     `tfsdk:"sample"`
+	SensitiveDataScannerProcessor []*sensitiveDataScannerProcessorModel                       `tfsdk:"sensitive_data_scanner"`
+	DedupeProcessor               []*dedupeProcessorModel                                     `tfsdk:"dedupe"`
+	ReduceProcessor               []*reduceProcessorModel                                     `tfsdk:"reduce"`
+	ThrottleProcessor             []*throttleProcessorModel                                   `tfsdk:"throttle"`
+	AddEnvVarsProcessor           []*addEnvVarsProcessorModel                                 `tfsdk:"add_env_vars"`
+	EnrichmentTableProcessor      []*enrichmentTableProcessorModel                            `tfsdk:"enrichment_table"`
+	OcsfMapperProcessor           []*ocsfMapperProcessorModel                                 `tfsdk:"ocsf_mapper"`
+	DatadogTagsProcessor          []*observability_pipeline.DatadogTagsProcessorModel         `tfsdk:"datadog_tags"`
+	CustomProcessor               []*observability_pipeline.CustomProcessorModel              `tfsdk:"custom_processor"`
+	AddHostnameProcessor          []*addHostnameProcessorModel                                `tfsdk:"add_hostname"`
+	ParseXMLProcessor             []*parseXMLProcessorModel                                   `tfsdk:"parse_xml"`
+	SplitArrayProcessor           []*splitArrayProcessorModel                                 `tfsdk:"split_array"`
+	MetricTagsProcessor           []*metricTagsProcessorModel                                 `tfsdk:"metric_tags"`
+	AddMetricTagsProcessor        []*observability_pipeline.AddMetricTagsProcessorModel       `tfsdk:"add_metric_tags"`
+	AggregateProcessor            []*observability_pipeline.AggregateProcessorModel           `tfsdk:"aggregate"`
+	RenameMetricTagsProcessor     []*observability_pipeline.RenameMetricTagsProcessorModel    `tfsdk:"rename_metric_tags"`
+	TagCardinalityLimitProcessor  []*observability_pipeline.TagCardinalityLimitProcessorModel `tfsdk:"tag_cardinality_limit"`
 }
 
 type metricTagsProcessorModel struct {
