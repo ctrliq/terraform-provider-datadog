@@ -105,12 +105,17 @@ func (m *onCallTeamRoutingRulesModel) Validate() diag.Diagnostics {
 				}
 			}
 			if action.Slack != nil {
-				teamsPath := actionPath.AtName("send_slack_message")
+				slackPath := actionPath.AtName("send_slack_message")
 				if action.Slack.Workspace.IsNull() {
-					diags.AddAttributeError(teamsPath, "missing workspace", "workspace is required")
+					diags.AddAttributeError(slackPath, "missing workspace", "workspace is required")
 				}
 				if action.Slack.Channel.IsNull() {
-					diags.AddAttributeError(teamsPath, "missing channel", "channel is required")
+					diags.AddAttributeError(slackPath, "missing channel", "channel is required")
+				}
+				if cc := action.Slack.CustomizableContent; cc != nil &&
+					cc.IncludeDescription.IsNull() && cc.IncludeSource.IsNull() {
+					diags.AddAttributeError(slackPath.AtName("customizable_content"), "empty customizable_content block",
+						"customizable_content requires at least one of `include_description` or `include_source` to be set")
 				}
 			}
 			if action.Workflow != nil {
@@ -493,7 +498,12 @@ func (r *onCallTeamRoutingRulesResource) stateFromResponse(resp *datadogV2.TeamR
 						if v, ok := cc["include_source"].(bool); ok {
 							ccModel.IncludeSource = types.BoolValue(v)
 						}
-						slack.CustomizableContent = ccModel
+						// Skip if the API echoed an empty object — otherwise state would
+						// surface a present-but-null block and produce spurious diffs
+						// against configs that don't declare customizable_content.
+						if !ccModel.IncludeDescription.IsNull() || !ccModel.IncludeSource.IsNull() {
+							slack.CustomizableContent = ccModel
+						}
 					}
 				}
 				stateActions = append(stateActions, &teamRuleActionModel{Slack: slack})
@@ -586,14 +596,17 @@ func (r *onCallTeamRoutingRulesResource) teamRoutingRulesRequestFromModel(state 
 				// to typed accessors once the client is regenerated.
 				if plannedAction.Slack.CustomizableContent != nil {
 					cc := map[string]interface{}{}
-					if !plannedAction.Slack.CustomizableContent.IncludeDescription.IsNull() {
-						cc["include_description"] = plannedAction.Slack.CustomizableContent.IncludeDescription.ValueBool()
+					if v := plannedAction.Slack.CustomizableContent.IncludeDescription; !v.IsNull() && !v.IsUnknown() {
+						cc["include_description"] = v.ValueBool()
 					}
-					if !plannedAction.Slack.CustomizableContent.IncludeSource.IsNull() {
-						cc["include_source"] = plannedAction.Slack.CustomizableContent.IncludeSource.ValueBool()
+					if v := plannedAction.Slack.CustomizableContent.IncludeSource; !v.IsNull() && !v.IsUnknown() {
+						cc["include_source"] = v.ValueBool()
 					}
-					action.SendSlackMessageAction.AdditionalProperties = map[string]interface{}{
-						"customizable_content": cc,
+					if len(cc) > 0 {
+						if action.SendSlackMessageAction.AdditionalProperties == nil {
+							action.SendSlackMessageAction.AdditionalProperties = map[string]interface{}{}
+						}
+						action.SendSlackMessageAction.AdditionalProperties["customizable_content"] = cc
 					}
 				}
 			}
